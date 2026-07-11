@@ -39,6 +39,12 @@ local function readConfiguredGiB()
     if not fileExists(path) then
         createFolder(getUserProfileAppPath() .. "modSettings")
         local xml = createXMLFile("avo", path, "textureStreamingBudget")
+        if xml == nil or xml == 0 then
+            -- restricted profile folder, disk full, AV lock, ... : fail safely
+            -- to the default instead of writing through an invalid handle.
+            log("settings file could not be created; using default")
+            return DEFAULT_GIB
+        end
         setXMLFloat(xml, "textureStreamingBudget#vramGiB", DEFAULT_GIB)
         setXMLString(xml, "textureStreamingBudget#help",
             "vramGiB = how much graphics-card memory FS25 may use for textures. "
@@ -46,7 +52,11 @@ local function readConfiguredGiB()
             .. "card actually has more than 4 GB. Delete this file to reset it.")
         saveXMLFile(xml)
         delete(xml)
-        log(string.format("created settings %s (default %d GiB)", path, DEFAULT_GIB))
+        if fileExists(path) then
+            log(string.format("created settings %s (default %d GiB)", path, DEFAULT_GIB))
+        else
+            log("settings file could not be written; using default")
+        end
         return DEFAULT_GIB
     end
 
@@ -76,6 +86,12 @@ function AutoVRAMOptimizer.apply()
     end
 
     local gib = readConfiguredGiB()
+    -- A NaN from a corrupt / hand-edited settings file compares false to every
+    -- bound, so it would slip past the range clamp below and reach the native
+    -- engine call. Reject NaN and infinities up front.
+    if gib ~= gib or gib == math.huge or gib == -math.huge then
+        gib = DEFAULT_GIB
+    end
     if gib < MIN_GIB then gib = MIN_GIB end
     if gib > MAX_GIB then gib = MAX_GIB end
 
