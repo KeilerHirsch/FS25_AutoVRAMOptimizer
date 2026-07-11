@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--
+  Auto VRAM Optimizer  -  raises FS25's texture-streaming VRAM budget
+  Copyright (C) 2026  KeilerHirsch  -  GNU GPL v3 or later.
+  Attribution required: forks and redistributions must keep the author name.
+-->
+<modDesc descVersion="106">
+    <author>KeilerHirsch</author>
+    <version>1.0.0.0</version>
+    <iconFilename>icon.dds</iconFilename>
+    <multiplayer supported="true"/>
+
+    <title>
+        <en>Auto VRAM Optimizer</en>
+        <de>Auto VRAM Optimizer</de>
+        <fr>Auto VRAM Optimizer</fr>
+        <es>Auto VRAM Optimizer</es>
+        <it>Auto VRAM Optimizer</it>
+        <pt>Auto VRAM Optimizer</pt>
+        <pl>Auto VRAM Optimizer</pl>
+        <ru>Auto VRAM Optimizer</ru>
+    </title>
+
+    <description>
+        <en><![CDATA[Farming Simulator 25 caps high-resolution texture streaming at about 4 GB of graphics memory by default. On texture-heavy or large maps this causes flicker and pop-in as textures are dropped and reloaded.
+
+Auto VRAM Optimizer raises that cap automatically on every game start - no code editing - for smoother loading and crisp textures. The budget is stored in a simple settings file (modSettings/FS25_AutoVRAMOptimizer.xml, created on first run); the default suits 8 GB cards, just set the one value to match yours.
+
+Client-side rendering only: fully multiplayer-safe, changes no gameplay and no savegame data.
+
+Only use it if your graphics card has MORE than 4 GB of VRAM.]]></en>
+
+        <de><![CDATA[Farming Simulator 25 begrenzt das Streaming hochauflösender Texturen standardmäßig auf rund 4 GB Grafikspeicher. Auf texturlastigen oder großen Karten führt das zu Flackern und Nachladen, weil Texturen verworfen und neu geladen werden.
+
+Auto VRAM Optimizer hebt dieses Limit bei jedem Spielstart automatisch an - ohne Code zu bearbeiten - für flüssigeres Laden und scharfe Texturen. Der Wert steht in einer einfachen Einstellungsdatei (modSettings/FS25_AutoVRAMOptimizer.xml, wird beim ersten Start angelegt); der Standard passt für 8-GB-Karten, setze einfach den einen Wert passend zu deiner Karte.
+
+Reine clientseitige Render-Einstellung: voll multiplayer-sicher, ändert kein Gameplay und keinen Spielstand.
+
+Nur verwenden, wenn deine Grafikkarte MEHR als 4 GB VRAM hat.]]></de>
+
+        <fr><![CDATA[Par défaut, Farming Simulator 25 limite le streaming des textures haute résolution à environ 4 Go de mémoire graphique. Sur les cartes volumineuses ou riches en textures, cela provoque des scintillements et du rechargement.
+
+Auto VRAM Optimizer augmente automatiquement cette limite à chaque démarrage - sans modifier de code - pour un chargement plus fluide et des textures nettes. La valeur est enregistrée dans un simple fichier de réglages (modSettings/FS25_AutoVRAMOptimizer.xml, créé au premier lancement) ; la valeur par défaut convient aux cartes de 8 Go, ajustez-la simplement à la vôtre.
+
+Réglage de rendu côté client uniquement : entièrement compatible multijoueur, ne modifie ni le jeu ni la sauvegarde.
+
+À n'utiliser que si votre carte graphique dispose de PLUS de 4 Go de VRAM.]]></fr>
+
+        <es><![CDATA[Farming Simulator 25 limita de forma predeterminada el streaming de texturas de alta resolución a unos 4 GB de memoria gráfica. En mapas grandes o con muchas texturas esto provoca parpadeos y recargas.
+
+Auto VRAM Optimizer sube ese límite automáticamente en cada inicio - sin editar código - para una carga más fluida y texturas nítidas. El valor se guarda en un sencillo archivo de configuración (modSettings/FS25_AutoVRAMOptimizer.xml, creado en el primer arranque); el valor por defecto es adecuado para tarjetas de 8 GB, solo ajústalo al de la tuya.
+
+Ajuste de renderizado solo del lado del cliente: totalmente seguro en multijugador, no cambia el juego ni la partida guardada.
+
+Úsalo solo si tu tarjeta gráfica tiene MÁS de 4 GB de VRAM.]]></es>
+
+        <it><![CDATA[Farming Simulator 25 limita per impostazione predefinita lo streaming delle texture ad alta risoluzione a circa 4 GB di memoria grafica. Su mappe grandi o ricche di texture questo causa sfarfallio e ricaricamenti.
+
+Auto VRAM Optimizer alza automaticamente questo limite a ogni avvio - senza modificare codice - per un caricamento più fluido e texture nitide. Il valore è salvato in un semplice file di configurazione (modSettings/FS25_AutoVRAMOptimizer.xml, creato al primo avvio); il valore predefinito va bene per schede da 8 GB, basta adattarlo alla tua.
+
+Impostazione di rendering solo lato client: pienamente sicura in multiplayer, non modifica il gioco né il salvataggio.
+
+Usalo solo se la tua scheda grafica ha PIÙ di 4 GB di VRAM.]]></it>
+
+        <pt><![CDATA[O Farming Simulator 25 limita por padrão o streaming de texturas de alta resolução a cerca de 4 GB de memória gráfica. Em mapas grandes ou com muitas texturas isso causa cintilação e recarregamento.
+
+O Auto VRAM Optimizer aumenta esse limite automaticamente a cada início - sem editar código - para um carregamento mais suave e texturas nítidas. O valor fica num arquivo de configuração simples (modSettings/FS25_AutoVRAMOptimizer.xml, criado no primeiro início); o padrão serve para placas de 8 GB, basta ajustar o valor para a sua.
+
+Ajuste de renderização apenas do lado do cliente: totalmente seguro em multijogador, não altera a jogabilidade nem o save.
+
+Use apenas se a sua placa de vídeo tiver MAIS de 4 GB de VRAM.]]></pt>
+
+        <pl><![CDATA[Farming Simulator 25 domyślnie ogranicza strumieniowanie tekstur w wysokiej rozdzielczości do około 4 GB pamięci karty graficznej. Na dużych lub bogatych w tekstury mapach powoduje to migotanie i doczytywanie.
+
+Auto VRAM Optimizer automatycznie podnosi ten limit przy każdym uruchomieniu - bez edycji kodu - dla płynniejszego ładowania i ostrych tekstur. Wartość jest zapisywana w prostym pliku ustawień (modSettings/FS25_AutoVRAMOptimizer.xml, tworzonym przy pierwszym uruchomieniu); domyślna pasuje do kart 8 GB, wystarczy ustawić jedną wartość odpowiednią dla Twojej karty.
+
+Ustawienie renderowania tylko po stronie klienta: w pełni bezpieczne w trybie wieloosobowym, nie zmienia rozgrywki ani zapisu gry.
+
+Używaj tylko, jeśli Twoja karta graficzna ma WIĘCEJ niż 4 GB VRAM.]]></pl>
+
+        <ru><![CDATA[Farming Simulator 25 по умолчанию ограничивает потоковую загрузку текстур высокого разрешения примерно 4 ГБ видеопамяти. На больших или насыщенных текстурами картах это вызывает мерцание и подгрузку.
+
+Auto VRAM Optimizer автоматически повышает этот лимит при каждом запуске - без правки кода - для более плавной загрузки и чётких текстур. Значение хранится в простом файле настроек (modSettings/FS25_AutoVRAMOptimizer.xml, создаётся при первом запуске); значение по умолчанию подходит для карт на 8 ГБ, просто укажите значение под свою карту.
+
+Настройка отрисовки только на стороне клиента: полностью безопасно для мультиплеера, не меняет геймплей и сохранения.
+
+Используйте только если у вашей видеокарты БОЛЬШЕ 4 ГБ видеопамяти.]]></ru>
+    </description>
+
+    <extraSourceFiles>
+        <sourceFile filename="scripts/textureBudget.lua"/>
+    </extraSourceFiles>
+</modDesc>
