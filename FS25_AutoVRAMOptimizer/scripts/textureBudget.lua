@@ -1,6 +1,6 @@
 -- ============================================================================
 --  Auto VRAM Optimizer  --  Texture-Streaming Budget for Farming Simulator 25
---  Copyright (c) 2026 KeilerHirsch. Proprietary, source-available.
+--  Copyright (c) 2026 KeilerHirsch. Licensed under the GNU GPL v3 or later.
 --
 --  The Man, The Mythos, The Legend : KeilerHirsch
 --

@@ -6,7 +6,7 @@
 
 **Raise Farming Simulator 25's texture-streaming VRAM budget — automatically.**
 
-[![License: Proprietary, source-available](https://img.shields.io/badge/License-Proprietary%20source--available-blue.svg)](LICENSE) &nbsp;·&nbsp; FS25 &nbsp;·&nbsp; Multiplayer-safe &nbsp;·&nbsp; 8 languages
+[![License: GPLv3](https://img.shields.io/badge/License-GPLv3-green.svg)](LICENSE) &nbsp;·&nbsp; FS25 &nbsp;·&nbsp; Multiplayer-safe &nbsp;·&nbsp; 8 languages
 
 </div>
 
@@ -72,7 +72,7 @@ Fully safe. The texture budget is a **local rendering setting** — it never tou
 
 ## License
 
-**Proprietary, source-available** — see [LICENSE](LICENSE). You may read the source and use the released mod unmodified; you may not copy, modify, or redistribute it. Only ModHub and this repository are valid sources.
+**GPLv3** — free software. Forks and redistribution are welcome; you **must keep the author attribution (KeilerHirsch)** and the same license. See [LICENSE](LICENSE).
 
 ## Credits
 

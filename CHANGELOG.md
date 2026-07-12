@@ -3,6 +3,13 @@
 All notable changes to **Auto VRAM Optimizer** are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.3.0] - 2026-07-12
+
+### Changed
+- Relicensed **back to GPLv3**, restoring the original license. The KeilerHirsch
+  default is GPLv3 (open but copyleft: forks/PRs welcome, keep the attribution and
+  the same license). Reverts the brief v1.0.2.0 proprietary switch.
+
 ## [1.0.2.0] - 2026-07-12
 
 ### Changed
