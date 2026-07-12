@@ -3,6 +3,18 @@
 All notable changes to **Auto VRAM Optimizer** are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.2.0] - 2026-07-12
+
+### Changed
+- Relicensed to **Proprietary, source-available** (was GPLv3), consistent with the
+  KeilerHirsch mod standard. Prior releases (≤ v1.0.1.0) remain under GPLv3; this
+  change applies from this release onward.
+- Added the author signature to the script header and shipped `LICENSE` inside the
+  mod zip.
+
+### Added
+- Ko-fi support callout in the README (FUNDING already present).
+
 ## [1.0.1.0] - 2026-07-11
 
 Robustness-hardening pass (independent code- and security-review, luac).

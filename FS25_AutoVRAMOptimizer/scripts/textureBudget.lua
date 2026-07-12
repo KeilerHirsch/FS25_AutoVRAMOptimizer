@@ -1,6 +1,8 @@
 -- ============================================================================
 --  Auto VRAM Optimizer  --  Texture-Streaming Budget for Farming Simulator 25
---  Copyright (C) 2026  KeilerHirsch.  GNU GPL v3 or later.
+--  Copyright (c) 2026 KeilerHirsch. Proprietary, source-available.
+--
+--  The Man, The Mythos, The Legend : KeilerHirsch
 --
 --  FS25 caps high-resolution texture streaming at ~4 GB of VRAM by default,
 --  which starves texture-heavy and large maps and causes flicker / pop-in.
