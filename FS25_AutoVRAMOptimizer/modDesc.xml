@@ -6,7 +6,7 @@
 -->
 <modDesc descVersion="106">
     <author>KeilerHirsch</author>
-    <version>1.0.3.0</version>
+    <version>1.1.0.0</version>
     <iconFilename>icon.dds</iconFilename>
     <multiplayer supported="true"/>
 
@@ -24,7 +24,7 @@
     <description>
         <en><![CDATA[Farming Simulator 25 caps high-resolution texture streaming at about 4 GB of graphics memory by default. On texture-heavy or large maps this causes flicker and pop-in as textures are dropped and reloaded.
 
-Auto VRAM Optimizer raises that cap automatically on every game start - no code editing - for smoother loading and crisp textures. The budget is stored in a simple settings file (modSettings/FS25_AutoVRAMOptimizer.xml, created on first run); the default suits 8 GB cards, just set the one value to match yours.
+Auto VRAM Optimizer raises that cap automatically on every game start - no code editing - for smoother loading and crisp textures. The budget is stored in a simple settings file (modSettings/FS25_AutoVRAMOptimizer.xml, created on first run); the default suits 8 GB cards. Run the included Auto-Set-VRAM helper once and it detects your card (NVIDIA / AMD / Intel) and sets the right value for you, or just set the one value by hand.
 
 Client-side rendering only: fully multiplayer-safe, changes no gameplay and no savegame data.
 
@@ -32,7 +32,7 @@ Only use it if your graphics card has MORE than 4 GB of VRAM.]]></en>
 
         <de><![CDATA[Farming Simulator 25 begrenzt das Streaming hochauflösender Texturen standardmäßig auf rund 4 GB Grafikspeicher. Auf texturlastigen oder großen Karten führt das zu Flackern und Nachladen, weil Texturen verworfen und neu geladen werden.
 
-Auto VRAM Optimizer hebt dieses Limit bei jedem Spielstart automatisch an - ohne Code zu bearbeiten - für flüssigeres Laden und scharfe Texturen. Der Wert steht in einer einfachen Einstellungsdatei (modSettings/FS25_AutoVRAMOptimizer.xml, wird beim ersten Start angelegt); der Standard passt für 8-GB-Karten, setze einfach den einen Wert passend zu deiner Karte.
+Auto VRAM Optimizer hebt dieses Limit bei jedem Spielstart automatisch an - ohne Code zu bearbeiten - für flüssigeres Laden und scharfe Texturen. Der Wert steht in einer einfachen Einstellungsdatei (modSettings/FS25_AutoVRAMOptimizer.xml, wird beim ersten Start angelegt); der Standard passt für 8-GB-Karten. Starte einmal das mitgelieferte Auto-Set-VRAM-Tool - es erkennt deine Karte (NVIDIA / AMD / Intel) und setzt den passenden Wert für dich, oder setze den einen Wert von Hand.
 
 Reine clientseitige Render-Einstellung: voll multiplayer-sicher, ändert kein Gameplay und keinen Spielstand.
 

@@ -3,6 +3,23 @@
 All notable changes to **Auto VRAM Optimizer** are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.0.0] - 2026-07-14
+
+### Added
+- **True cross-vendor VRAM auto-detection.** A one-click helper (`Auto-Set-VRAM.bat`
+  → `configure_vram.py`, shipped in `AutoVRAM-Tool.zip`) detects your graphics-card
+  memory on **NVIDIA / AMD / Intel** — via the vendor-neutral display-adapter registry
+  key `HardwareInformation.qwMemorySize` (not the 4 GB-capped WMI value), with an
+  `nvidia-smi` fallback — and writes the matched budget into the mod's settings file.
+  The mod previously only auto-*applied* a hardcoded 6 GiB default; now the "Auto" in
+  the name is real. Detector is reused (verified) from the 16x Map Fix tool.
+- CI now runs the tool's Python unit tests (stdlib `unittest`, no deps) alongside the
+  Lua parse check; least-privilege `permissions: contents: read` on the workflow.
+
+### Notes
+- The mod still works standalone with its safe default if you don't run the helper —
+  the tool is an optional one-time step (needs Windows + Python 3).
+
 ## [1.0.3.0] - 2026-07-12
 
 ### Changed
