@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" font-family="'Segoe UI',Roboto,Helvetica,Arial,sans-serif" role="img" aria-label="Auto VRAM Optimizer raises FS25's default ~4 GB texture cap to your card's real VRAM, auto-detected across NVIDIA, AMD and Intel">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="amberPanel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2e2411"/>
+      <stop offset="1" stop-color="#1b1810"/>
+    </linearGradient>
+    <linearGradient id="greenPanel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f2a1c"/>
+      <stop offset="1" stop-color="#111c17"/>
+    </linearGradient>
+    <linearGradient id="arrow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f59e0b"/>
+      <stop offset="1" stop-color="#22c55e"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1280" height="640" rx="26" fill="url(#bg)"/>
+
+  <!-- Header (full-width, left-aligned — nothing near a right edge) -->
+  <text x="64" y="66" fill="#4ade80" font-size="20" font-weight="700" letter-spacing="3">FS25 · TEXTURE-STREAMING BUDGET</text>
+  <text x="64" y="120" fill="#f1f5f9" font-size="46" font-weight="800">~4 GB cap <tspan fill="#64748b" font-weight="600">→</tspan> <tspan fill="#4ade80">your full VRAM</tspan></text>
+  <text x="64" y="152" fill="#94a3b8" font-size="19">Detects your card and raises FS25's conservative texture cap to match — no editing.</text>
+
+  <!-- BEFORE panel -->
+  <rect x="64" y="188" width="512" height="368" rx="18" fill="url(#amberPanel)" stroke="#f59e0b" stroke-opacity="0.45" stroke-width="1.5"/>
+  <rect x="64" y="188" width="512" height="6" rx="3" fill="#f59e0b"/>
+  <text x="92" y="232" fill="#fbbf24" font-size="17" font-weight="700" letter-spacing="2">BEFORE — FS25 DEFAULT</text>
+
+  <text x="92" y="300" fill="#f59e0b" font-size="54" font-weight="800">~4 GB</text>
+  <text x="94" y="330" fill="#cbd5e1" font-size="18">hard texture cap — most of your card sits idle</text>
+
+  <!-- VRAM bar: 12 GB card, ~4 GB used -->
+  <g transform="translate(92,354)">
+    <rect x="0" y="0" width="456" height="34" rx="8" fill="#0b1220" stroke="#334155" stroke-width="1"/>
+    <rect x="3" y="3" width="150" height="28" rx="6" fill="#f59e0b" fill-opacity="0.9"/>
+    <text x="14" y="22" fill="#1b1810" font-size="14" font-weight="800">4 GB used</text>
+    <text x="304" y="22" fill="#94a3b8" font-size="14" font-weight="700" text-anchor="middle">8 GB idle</text>
+    <text x="0" y="58" fill="#94a3b8" font-size="14">on a 12 GB card — two thirds wasted</text>
+  </g>
+
+  <g font-size="15" font-weight="600">
+    <rect x="92" y="474" width="168" height="34" rx="17" fill="#f59e0b" fill-opacity="0.14"/>
+    <text x="176" y="496" fill="#fbbf24" text-anchor="middle">texture pop-in</text>
+    <rect x="272" y="474" width="180" height="34" rx="17" fill="#f59e0b" fill-opacity="0.14"/>
+    <text x="362" y="496" fill="#fbbf24" text-anchor="middle">flicker &amp; stutter</text>
+  </g>
+
+  <!-- Arrow (glyph only — no text in the gap) -->
+  <g transform="translate(604,363)">
+    <rect x="0" y="-9" width="72" height="18" rx="9" fill="url(#arrow)"/>
+    <path d="M70 -20 L96 0 L70 20 Z" fill="#22c55e"/>
+  </g>
+
+  <!-- AFTER panel -->
+  <rect x="704" y="188" width="512" height="368" rx="18" fill="url(#greenPanel)" stroke="#22c55e" stroke-opacity="0.5" stroke-width="1.5"/>
+  <rect x="704" y="188" width="512" height="6" rx="3" fill="#22c55e"/>
+  <text x="732" y="232" fill="#4ade80" font-size="17" font-weight="700" letter-spacing="2">AFTER — AUTO VRAM OPTIMIZER</text>
+
+  <text x="732" y="300" fill="#22c55e" font-size="54" font-weight="800">10 GB</text>
+  <text x="734" y="330" fill="#cbd5e1" font-size="18">budget = your VRAM minus 2 GB headroom</text>
+
+  <!-- VRAM bar: 12 GB card, 10 GB budget -->
+  <g transform="translate(732,354)">
+    <rect x="0" y="0" width="456" height="34" rx="8" fill="#0b1220" stroke="#334155" stroke-width="1"/>
+    <rect x="3" y="3" width="376" height="28" rx="6" fill="#22c55e" fill-opacity="0.9"/>
+    <text x="14" y="22" fill="#0b1a12" font-size="14" font-weight="800">10 GB budget</text>
+    <text x="418" y="22" fill="#94a3b8" font-size="14" font-weight="700" text-anchor="middle">2 GB</text>
+    <text x="0" y="58" fill="#94a3b8" font-size="14">the same card — now actually used</text>
+  </g>
+
+  <g font-size="15" font-weight="600">
+    <rect x="732" y="474" width="160" height="34" rx="17" fill="#22c55e" fill-opacity="0.14"/>
+    <text x="812" y="496" fill="#4ade80" text-anchor="middle">crisp textures</text>
+    <rect x="904" y="474" width="184" height="34" rx="17" fill="#22c55e" fill-opacity="0.14"/>
+    <text x="996" y="496" fill="#4ade80" text-anchor="middle">smoother loading</text>
+  </g>
+
+  <!-- Footer method strip (full width — vendor names live here, no overflow risk) -->
+  <rect x="64" y="582" width="1152" height="34" rx="10" fill="#0b1220" stroke="#334155" stroke-width="1"/>
+  <text x="88" y="604" fill="#cbd5e1" font-size="14">
+    <tspan font-weight="700" fill="#4ade80">Auto-detects</tspan> across NVIDIA · AMD · Intel — reads the uncapped display-adapter registry value (not WMI's 4 GB) · applied every start · multiplayer-safe
+  </text>
+</svg>

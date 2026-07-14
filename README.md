@@ -15,6 +15,8 @@
 
 ---
 
+<p align="center"><img src="assets/showcase.svg" width="900" alt="Before and after: FS25's default ~4 GB texture cap raised to your card's full VRAM, auto-detected across NVIDIA, AMD and Intel"/></p>
+
 ## What it does
 
 Farming Simulator 25 caps high-resolution **texture streaming at about 4 GB of graphics memory** by default. On texture-heavy or large maps your card constantly drops and reloads textures → **flicker, pop-in, and stutter during load**.
