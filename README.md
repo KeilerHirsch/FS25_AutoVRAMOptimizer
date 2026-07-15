@@ -15,7 +15,7 @@
 
 ---
 
-<p align="center"><img src="assets/showcase.png" width="900" alt="Before and after: FS25's default ~4 GB texture cap raised to your card's full VRAM, auto-detected across NVIDIA, AMD and Intel"/></p>
+<p align="center"><img src="assets/showcase.gif" width="900" alt="Before and after: FS25's default ~4 GB texture cap raised to your card's full VRAM, auto-detected across NVIDIA, AMD and Intel"/></p>
 
 ## What it does
 
