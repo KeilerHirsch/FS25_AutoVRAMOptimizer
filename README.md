@@ -57,18 +57,18 @@ The mod alone uses a safe default; the helper makes it match your actual hardwar
 On first run the mod creates `modSettings/FS25_AutoVRAMOptimizer.xml`:
 
 ```xml
-<textureStreamingBudget vramGiB="6.0" .../>
+<textureStreamingBudget vramGiB="5.0" .../>
 ```
 
-`vramGiB` = how much VRAM FS25 may use for textures. **Rule of thumb: your VRAM in GB minus 2.** The default (`6`) suits 8 GB cards. Set it once for your card; delete the file to reset.
+`vramGiB` = how much VRAM FS25 may use for textures. **Rule of thumb: your VRAM in GB minus 3** — the game needs the rest for non-texture VRAM (render targets, meshes, shadows, other mods), which spikes on large/heavy maps. The default (`5`) suits 8 GB cards. Set it once for your card; lower it if a heavy map still crashes; delete the file to reset.
 
 | Your card | Suggested `vramGiB` |
 |---|---|
-| 6 GB | `4` |
-| 8 GB | `6` (default) |
-| 12 GB | `10` |
-| 16 GB | `14` |
-| 24 GB | `22` |
+| 6 GB | `3` |
+| 8 GB | `5` (default) |
+| 12 GB | `9` |
+| 16 GB | `12` |
+| 24 GB | `18` |
 
 ## How it works
 

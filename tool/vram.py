@@ -134,15 +134,33 @@ def detect_vram_gib() -> float | None:
 
 
 def recommended_budget_gib(
-    vram_gib: float, headroom_gib: float = 2.0, floor_gib: float = 2.0
+    vram_gib: float,
+    headroom_gib: float = 3.0,
+    floor_gib: float = 2.0,
+    max_fraction: float = 0.75,
 ) -> float:
     """Texture-streaming budget for the given VRAM.
 
     Rounds the (slightly-under-nominal) reported VRAM to the nearest whole GiB,
-    then reserves ``headroom_gib`` for the OS/desktop, never dropping below
-    ``floor_gib``. An 8 GB card (~7.99 GiB reported) therefore yields 6 GiB.
+    then takes the SMALLER of two safety limits, never dropping below
+    ``floor_gib``:
+
+    * a fixed ``headroom_gib`` reserved for the OS/desktop and -- decisively --
+      for the game's own non-texture VRAM (render targets, meshes, shadow maps
+      and other mods' assets), which on a large/heavy map is another 2-3 GB on
+      top of the texture budget;
+    * a ``max_fraction`` ceiling so the budget never claims more than that share
+      of the card (guards small cards where a flat headroom is too generous).
+
+    An 8 GB card (~7.99 GiB reported) therefore yields 5 GiB. Earlier releases
+    reserved only 2 GiB and returned 6 GiB, which could exhaust VRAM and crash
+    the client while streaming a heavy modded map (observed: 8 GB card + a large
+    map + big modpack). 5 GiB leaves ~3 GB for everything else.
     """
-    return float(max(floor_gib, round(vram_gib) - headroom_gib))
+    rounded = round(vram_gib)
+    by_headroom = rounded - headroom_gib
+    by_fraction = rounded * max_fraction
+    return float(max(floor_gib, min(by_headroom, by_fraction)))
 
 
 if __name__ == "__main__":

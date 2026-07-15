@@ -3,6 +3,21 @@
 All notable changes to **Auto VRAM Optimizer** are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.1.0] - 2026-07-15
+
+### Changed
+- **Safer default budget — bigger VRAM headroom.** The recommended/blind-default
+  texture budget now reserves **3 GiB** of headroom instead of 2, and never claims
+  more than **75%** of the card. An 8 GB card now gets **5 GiB** (was 6). The old
+  2 GiB headroom left too little for the game's non-texture VRAM (render targets,
+  meshes, shadow maps, other mods) and could exhaust VRAM and crash the client while
+  streaming a large/heavy modded map — observed on an 8 GB card. The settings file
+  stays player-editable; lower it further if a very heavy map still crashes.
+
+### Notes
+- Existing installs keep whatever value is already in `modSettings/FS25_AutoVRAMOptimizer.xml`.
+  Delete that file to regenerate it with the new, safer default.
+
 ## [1.1.0.0] - 2026-07-14
 
 ### Added

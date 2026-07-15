@@ -17,7 +17,9 @@ AutoVRAMOptimizer = {}
 
 local MOD = "Auto VRAM Optimizer"
 local BYTES_PER_GIB = 1073741824
-local DEFAULT_GIB = 6    -- suits an 8 GB card: (VRAM in GB) minus 2 headroom
+local DEFAULT_GIB = 5    -- safe blind default for an 8 GB card: VRAM minus 3 headroom
+                         -- (the game needs 2-3 GB of non-texture VRAM on heavy maps;
+                         --  6 GiB left too little and could crash while map-streaming)
 local MIN_GIB = 2        -- never below the engine's own fallback
 local MAX_GIB = 64       -- sanity ceiling against a fat-fingered value
 
@@ -50,8 +52,10 @@ local function readConfiguredGiB()
         setXMLFloat(xml, "textureStreamingBudget#vramGiB", DEFAULT_GIB)
         setXMLString(xml, "textureStreamingBudget#help",
             "vramGiB = how much graphics-card memory FS25 may use for textures. "
-            .. "Rule of thumb: your VRAM in GB minus 2. Only raise above 4 if your "
-            .. "card actually has more than 4 GB. Delete this file to reset it.")
+            .. "Rule of thumb: your VRAM in GB minus 3 (the game needs the rest for "
+            .. "non-texture VRAM, especially on large/heavy maps). Only raise above 4 "
+            .. "if your card has more than 4 GB; lower it if a heavy map still crashes. "
+            .. "Delete this file to reset it.")
         saveXMLFile(xml)
         delete(xml)
         if fileExists(path) then

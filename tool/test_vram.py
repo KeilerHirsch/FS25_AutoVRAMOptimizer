@@ -40,16 +40,24 @@ class CoerceIntTests(unittest.TestCase):
 
 
 class BudgetTests(unittest.TestCase):
-    def test_eight_gb_card_yields_six(self):
-        # 8 GB cards report ~7.99 GiB; rounding then -2 headroom must give 6.
-        self.assertEqual(vram.recommended_budget_gib(7.996), 6.0)
+    def test_eight_gb_card_yields_five(self):
+        # 8 GB cards report ~7.99 GiB; round -> 8, minus 3 headroom = 5.
+        # (Earlier releases used -2 and returned 6, which OOM-crashed heavy maps.)
+        self.assertEqual(vram.recommended_budget_gib(7.996), 5.0)
 
-    def test_large_card(self):
-        self.assertEqual(vram.recommended_budget_gib(16.0), 14.0)
+    def test_large_card_capped_by_fraction(self):
+        # 16 GB: headroom would allow 13, but the 75% cap holds it at 12.
+        self.assertEqual(vram.recommended_budget_gib(16.0), 12.0)
+        # 24 GB: min(24-3, 24*0.75) = min(21, 18) = 18.
+        self.assertEqual(vram.recommended_budget_gib(24.0), 18.0)
+
+    def test_six_gb_card(self):
+        # 6 GB: min(6-3, 6*0.75) = min(3, 4.5) = 3.
+        self.assertEqual(vram.recommended_budget_gib(6.0), 3.0)
 
     def test_floor_never_below_two(self):
-        self.assertEqual(vram.recommended_budget_gib(4.0), 2.0)
-        self.assertEqual(vram.recommended_budget_gib(3.0), 2.0)  # round3-2=1 -> clamp 2
+        self.assertEqual(vram.recommended_budget_gib(4.0), 2.0)  # min(1,3)=1 -> clamp 2
+        self.assertEqual(vram.recommended_budget_gib(3.0), 2.0)
         self.assertEqual(vram.recommended_budget_gib(2.0), 2.0)
 
 
