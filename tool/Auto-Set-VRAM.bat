@@ -9,7 +9,6 @@ rem  matches your card automatically -- no editing. Run it again if you change
 rem  graphics cards.
 rem ============================================================================
 setlocal
-chcp 65001 >nul
 set "PYTHONUTF8=1"
 title Auto VRAM Optimizer - Auto VRAM
 
@@ -36,7 +35,20 @@ if not defined PY (
   exit /b 1
 )
 
+rem Switch to UTF-8 only around the Python run, then restore the previous
+rem codepage. chcp changes CONSOLE state that endlocal does NOT revert, so
+rem without this, running the launcher from an existing terminal would leave
+rem that terminal stuck on codepage 65001. The early exits above stay on the
+rem original codepage (their messages are ASCII), so they need no restore.
+set "AVO_CP="
+for /f "tokens=2 delims=:" %%C in ('chcp') do set "AVO_CP=%%C"
+rem chcp output is localized and some locales append punctuation to the number
+rem (German prints "Aktive Codepage: 850." with a trailing dot), so keep only the
+rem leading numeric field, stripping both spaces and a trailing period.
+for /f "tokens=1 delims=. " %%N in ("%AVO_CP%") do set "AVO_CP=%%N"
+chcp 65001 >nul
 %PY% "%SCRIPT%"
+if defined AVO_CP chcp %AVO_CP% >nul
 
 echo(
 pause

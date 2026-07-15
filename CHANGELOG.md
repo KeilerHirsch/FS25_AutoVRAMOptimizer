@@ -3,6 +3,23 @@
 All notable changes to **Auto VRAM Optimizer** are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.1.1] - 2026-07-15
+
+### Fixed
+- **`Auto-Set-VRAM.bat` no longer changes the caller's console codepage.** The
+  launcher switched the console to UTF-8 (`chcp 65001`) without restoring it —
+  `chcp` is console state that `endlocal` does **not** revert, so running the tool
+  from an existing terminal (rather than a double-click) left that terminal stuck
+  on codepage 65001. It now records the current codepage, switches to UTF-8 only
+  around the Python run, and restores it afterwards; the early "missing Python /
+  script" exits stay on the original codepage (their messages are ASCII).
+
+### Changed
+- **Mod version bumped to 1.1.1.1 in lockstep with the tool** — the in-game Lua and
+  the settings format are **behaviourally identical** to 1.1.1.0 (no gameplay/VRAM
+  change); only `modDesc.xml` `<version>` moves, so the tool and the mod carry the
+  same version and the dedicated server + clients update together in one step.
+
 ## [1.1.1.0] - 2026-07-15
 
 ### Changed
