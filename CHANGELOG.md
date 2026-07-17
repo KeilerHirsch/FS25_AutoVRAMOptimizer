@@ -3,6 +3,23 @@
 All notable changes to **Auto VRAM Optimizer** are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.2.1] - 2026-07-17
+
+### Fixed
+- **`budget_breakdown()` could still exceed the physical card below 1 GiB.**
+  The fraction ceiling was computed from VRAM rounded UP to the nearest whole
+  GiB, so a 0.51 GiB card could get a 0.75 GiB budget (147% of it) — worse
+  than the 1.1.2.0 fix above. The result is now also capped at the raw,
+  unrounded detected VRAM. Found in an independent review pass after 1.1.2.0
+  was committed; confirmed by a second, focused pass; backed by a 100k-sample
+  stress test (0 violations) and a targeted regression test.
+
+### Changed
+- **README states the release-signing status.** Release assets are not
+  code-signed; every release ships a `SHA256SUMS` file to verify downloads
+  against instead. (No functional change — 1.1.2.0's tag predates this
+  wording fix, hence the immediate 1.1.2.1: same code, complete docs.)
+
 ## [1.1.2.0] - 2026-07-17
 
 ### Fixed
