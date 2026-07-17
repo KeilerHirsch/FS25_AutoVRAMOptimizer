@@ -79,6 +79,16 @@ class BudgetTests(unittest.TestCase):
                 breakdown = vram.budget_breakdown(float(card_gib))
                 self.assertEqual(breakdown.budget, vram.recommended_budget_gib(float(card_gib)))
 
+    def test_breakdown_never_exceeds_raw_vram_below_one_gib(self):
+        # Regression test for a second HIGH finding on the same day (2026-07-17):
+        # rounding a sub-1-GiB card UP to 1 GiB before computing the fraction
+        # ceiling let 0.51 GiB report a 0.75 GiB budget -- 147% of the real
+        # card, worse than the iGPU bug this whole fix exists to close.
+        for tiny_gib in (0.51, 0.6, 0.75, 0.9, 0.99):
+            with self.subTest(tiny_gib=tiny_gib):
+                budget = vram.budget_breakdown(tiny_gib).budget
+                self.assertLessEqual(budget, tiny_gib)
+
     def test_breakdown_reports_headroom_and_fraction_for_an_eight_gb_card(self):
         breakdown = vram.budget_breakdown(7.996)
         self.assertEqual(breakdown.rounded, 8)

@@ -179,11 +179,21 @@ def budget_breakdown(
     equivalent to the floor-capped ``max(min(floor, ceiling), min(by_headroom,
     ceiling))`` form by exhaustive comparison over 200k random inputs
     (2026-07-17), not just algebra.
+
+    The final result is also capped at the *raw, unrounded* ``vram_gib`` --
+    without this, a sub-1-GiB card gets rounded UP to a whole GiB before the
+    ceiling is computed (this rounding exists so a real card reporting
+    slightly under its nominal size, e.g. 7.9961 GiB, is treated as the 8 GiB
+    it actually is), and the ceiling is then a fraction of that rounded-up
+    value rather than of the card that's actually there. A 0.51 GiB card
+    would otherwise get 0.75 GiB (147% of it) -- worse than the very
+    iGPU-overshoot bug this cap exists to fix.
     """
     rounded = round(vram_gib)
     by_headroom = rounded - headroom_gib
     by_fraction = rounded * max_fraction
     budget = min(by_fraction, max(floor_gib, by_headroom))
+    budget = min(budget, vram_gib)
     return BudgetBreakdown(rounded, by_headroom, by_fraction, float(budget))
 
 
