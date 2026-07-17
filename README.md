@@ -44,7 +44,7 @@ Farming Simulator 25 caps high-resolution **texture streaming at about 4 GB of g
 3. Enable it in the mod selection. Done — it applies a budget on every start.
 
 > [!NOTE]
-> **Release assets are not code-signed** (no certificate, no `signtool`). Every
+> **Release assets are unsigned** (no certificate, no `signtool` code-signing). Every
 > release includes a `SHA256SUMS` file — verify a download against it
 > (`sha256sum -c SHA256SUMS` / `Get-FileHash` on Windows) if you want to
 > confirm it wasn't altered in transit.
