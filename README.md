@@ -26,6 +26,7 @@ Farming Simulator 25 caps high-resolution **texture streaming at about 4 GB of g
 ## Why you want it
 
 - ✅ **Auto-detects your VRAM** — cross-vendor (NVIDIA / AMD / Intel); the budget matches your actual card
+- ✅ **Never exceeds your card** — the budget is capped at a fraction of your detected VRAM, even on a smaller card than recommended
 - ✅ **Smoother loading** — fewer "not responding" hangs on big maps
 - ✅ **No texture pop-in / flicker** when you turn the camera
 - ✅ **Multiplayer-safe** — changes no gameplay, no savegame, no sync state

@@ -59,12 +59,17 @@ def write_settings(budget_gib: float, profile_dir: Path) -> Path:
 
     The structure matches what the mod's Lua reads: a root
     ``<textureStreamingBudget>`` element with a ``vramGiB`` attribute.
+    ``formulaGen`` records which formula version produced the value (see
+    ``vram.FORMULA_GEN``) so a value from an older tool release -- possibly
+    written by a formula this release no longer considers safe -- is
+    distinguishable from a value the user set by hand.
     """
     out = settings_path(profile_dir)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(
         '<?xml version="1.0" encoding="utf-8" standalone="no"?>\n'
         f'<textureStreamingBudget vramGiB="{budget_gib:.1f}" '
+        f'formulaGen="{vram.FORMULA_GEN}" '
         f"help={quoteattr(_HELP_TEXT)}/>\n",
         encoding="utf-8",
     )
@@ -82,9 +87,18 @@ def main() -> int:
         return 1
 
     vram_gib = raw / 1024 ** 3
-    budget_gib = vram.recommended_budget_gib(vram_gib)
+    breakdown = vram.budget_breakdown(vram_gib)
+    budget_gib = breakdown.budget
     print(f"  Detected VRAM : {vram_gib:.2f} GiB")
-    print(f"  Texture budget: {budget_gib:.1f} GiB  (VRAM minus 2 GiB headroom)")
+    # Prints the actual computed numbers rather than a prose description of
+    # the formula: a description in a different module than the formula is
+    # exactly what let this message go stale in an earlier release.
+    print(
+        f"  Texture budget: {budget_gib:.1f} GiB  "
+        f"(headroom {breakdown.by_headroom:.1f} GiB = VRAM - {vram.HEADROOM_GIB_DEFAULT:.0f}, "
+        f"ceiling {breakdown.by_fraction:.1f} GiB = {vram.MAX_FRACTION_DEFAULT:.0%} of VRAM, "
+        f"floor {vram.FLOOR_GIB_DEFAULT:.1f} GiB)"
+    )
 
     profile_dir = find_profile_dir()
     if profile_dir is None:

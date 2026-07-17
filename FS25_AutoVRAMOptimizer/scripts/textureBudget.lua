@@ -23,6 +23,12 @@ local DEFAULT_GIB = 5    -- safe blind default for an 8 GB card: VRAM minus 3 he
 local MIN_GIB = 2        -- never below the engine's own fallback
 local MAX_GIB = 64       -- sanity ceiling against a fat-fingered value
 
+-- Marks a settings file this Lua wrote blind, with no hardware detection --
+-- distinct from the tool's real formulaGen numbers (>=1, see configure_vram.py),
+-- so a future tool run can tell "this value was never based on the actual
+-- card" from "this value came from formula generation N" and reconcile it.
+local FORMULA_GEN_UNVERIFIED = 0
+
 local function log(msg)
     if Logging ~= nil and Logging.info ~= nil then
         Logging.info("[%s] %s", MOD, msg)
@@ -50,6 +56,7 @@ local function readConfiguredGiB()
             return DEFAULT_GIB
         end
         setXMLFloat(xml, "textureStreamingBudget#vramGiB", DEFAULT_GIB)
+        setXMLInt(xml, "textureStreamingBudget#formulaGen", FORMULA_GEN_UNVERIFIED)
         setXMLString(xml, "textureStreamingBudget#help",
             "vramGiB = how much graphics-card memory FS25 may use for textures. "
             .. "Rule of thumb: your VRAM in GB minus 3 (the game needs the rest for "

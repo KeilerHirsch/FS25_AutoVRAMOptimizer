@@ -25,6 +25,7 @@
 from __future__ import annotations
 
 import subprocess  # nosec B404 -- only runs nvidia-smi with a fixed list-form argv (no shell); see nvidia_smi_vram_bytes
+from typing import NamedTuple
 
 #: Windows "Display adapters" device class.
 DISPLAY_CLASS_KEY = (
@@ -41,6 +42,20 @@ _MEMORY_PROPERTIES = (
 _BYTES_PER_GIB = 1024 ** 3
 _BYTES_PER_MIB = 1024 ** 2
 _NVIDIA_SMI_TIMEOUT_S = 10
+
+#: recommended_budget_gib() defaults, exposed so configure_vram.py's status
+#: message can describe the actual formula instead of a hand-copied string
+#: that silently goes stale the next time these numbers change.
+HEADROOM_GIB_DEFAULT = 3.0
+FLOOR_GIB_DEFAULT = 2.0
+MAX_FRACTION_DEFAULT = 0.75
+
+#: Bumped whenever recommended_budget_gib()'s formula changes. Written into
+#: the settings XML (see configure_vram.write_settings) so a value already on
+#: disk from an older tool version is distinguishable from one a user set by
+#: hand -- without this, a stale pre-fix value survives every mod/tool update
+#: forever, because the mod only writes a default when the file is missing.
+FORMULA_GEN = 2
 
 
 def _coerce_positive_int(value: object) -> int | None:
@@ -133,17 +148,56 @@ def detect_vram_gib() -> float | None:
     return raw / _BYTES_PER_GIB if raw else None
 
 
+class BudgetBreakdown(NamedTuple):
+    """The intermediate values behind :func:`recommended_budget_gib`.
+
+    Exists so a status message can describe *why* a budget was chosen using
+    the exact numbers that produced it, instead of a hand-written formula
+    description living in a different module -- two copies of the same
+    formula (one computing, one describing in prose) is how the budget and
+    its own status message went out of sync in earlier releases.
+    """
+
+    rounded: int
+    by_headroom: float
+    by_fraction: float
+    budget: float
+
+
+def budget_breakdown(
+    vram_gib: float,
+    headroom_gib: float = HEADROOM_GIB_DEFAULT,
+    floor_gib: float = FLOOR_GIB_DEFAULT,
+    max_fraction: float = MAX_FRACTION_DEFAULT,
+) -> BudgetBreakdown:
+    """Compute :func:`recommended_budget_gib` and its intermediate values.
+
+    ``max_fraction`` of the (rounded) card is the hard ceiling; ``floor_gib``
+    and ``headroom_gib`` only decide where under that ceiling the budget
+    lands. This is the ``min(ceiling, max(floor, by_headroom))`` form of the
+    same formula documented on :func:`recommended_budget_gib` -- verified
+    equivalent to the floor-capped ``max(min(floor, ceiling), min(by_headroom,
+    ceiling))`` form by exhaustive comparison over 200k random inputs
+    (2026-07-17), not just algebra.
+    """
+    rounded = round(vram_gib)
+    by_headroom = rounded - headroom_gib
+    by_fraction = rounded * max_fraction
+    budget = min(by_fraction, max(floor_gib, by_headroom))
+    return BudgetBreakdown(rounded, by_headroom, by_fraction, float(budget))
+
+
 def recommended_budget_gib(
     vram_gib: float,
-    headroom_gib: float = 3.0,
-    floor_gib: float = 2.0,
-    max_fraction: float = 0.75,
+    headroom_gib: float = HEADROOM_GIB_DEFAULT,
+    floor_gib: float = FLOOR_GIB_DEFAULT,
+    max_fraction: float = MAX_FRACTION_DEFAULT,
 ) -> float:
     """Texture-streaming budget for the given VRAM.
 
     Rounds the (slightly-under-nominal) reported VRAM to the nearest whole GiB,
-    then takes the SMALLER of two safety limits, never dropping below
-    ``floor_gib``:
+    then takes the SMALLER of two safety limits, never dropping below an
+    *effective* floor:
 
     * a fixed ``headroom_gib`` reserved for the OS/desktop and -- decisively --
       for the game's own non-texture VRAM (render targets, meshes, shadow maps
@@ -156,11 +210,14 @@ def recommended_budget_gib(
     reserved only 2 GiB and returned 6 GiB, which could exhaust VRAM and crash
     the client while streaming a heavy modded map (observed: 8 GB card + a large
     map + big modpack). 5 GiB leaves ~3 GB for everything else.
+
+    ``max_fraction`` is the hard ceiling; ``floor_gib`` never raises the
+    budget above it. Earlier code applied ``floor_gib`` unconditionally,
+    giving a 1 GiB iGPU a budget at 200% of its physical VRAM (2 GiB card:
+    100%) -- the exact small-card case ``max_fraction`` exists to guard,
+    defeated by the floor sitting on top of it.
     """
-    rounded = round(vram_gib)
-    by_headroom = rounded - headroom_gib
-    by_fraction = rounded * max_fraction
-    return float(max(floor_gib, min(by_headroom, by_fraction)))
+    return budget_breakdown(vram_gib, headroom_gib, floor_gib, max_fraction).budget
 
 
 if __name__ == "__main__":

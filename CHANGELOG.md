@@ -3,6 +3,40 @@
 All notable changes to **Auto VRAM Optimizer** are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.1.2.0] - 2026-07-17
+
+### Fixed
+- **Recommended-budget floor could exceed the card's physical VRAM on very
+  small GPUs.** `recommended_budget_gib()`'s `floor_gib=2.0` was applied
+  unconditionally, so a 1 GiB integrated GPU received a 2.0 GiB budget (200%
+  of its VRAM) and a 2 GiB card received exactly 100%, defeating the 75%
+  fraction cap the floor sits on top of. The floor is now itself capped at
+  that fraction, so it never wins on a card small enough for it to matter.
+  Only 1-2 GiB inputs change (now 0.75 / 1.5 GiB respectively); every card
+  from 3 GiB up is unaffected (verified by re-running the formula across the
+  full 1-64 GiB range).
+- **`Auto-Set-VRAM`'s console message described the wrong formula.** It said
+  "VRAM minus 2 GiB headroom" — stale since 1.1.1.0 introduced the 3 GiB /
+  75%-cap formula. A user reading "minus 2", seeing 5.0 GiB on an 8 GB card,
+  and concluding the tool was wrong could "fix" it by hand-editing the
+  settings file back to the old (crash-prone) 6.0 GiB value. The message now
+  states the actual formula and is generated from the same constants the
+  formula uses, so it cannot drift out of sync again.
+
+### Added
+- **Settings file now records which formula version produced it
+  (`formulaGen`).** Previously a value written by an earlier, less
+  conservative tool release (e.g. `6.0` from the pre-1.1.1.0 formula) was
+  indistinguishable from a value the user set by hand, and nothing —
+  including this fix — could ever correct it automatically, because the mod
+  only writes a value when the settings file is missing. `formulaGen` makes
+  that provenance visible for manual inspection and for any future tool
+  version that wants to check it — this release does not yet reconcile an
+  old value automatically. **If you installed this mod before 1.1.1.0**,
+  your settings file may still hold the old formula's value: delete
+  `<FS25 profile>/modSettings/FS25_AutoVRAMOptimizer.xml` (or re-run
+  `Auto-Set-VRAM`) to have it recomputed under the current formula.
+
 ## [1.1.1.1] - 2026-07-15
 
 ### Fixed

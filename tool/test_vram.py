@@ -55,10 +55,45 @@ class BudgetTests(unittest.TestCase):
         # 6 GB: min(6-3, 6*0.75) = min(3, 4.5) = 3.
         self.assertEqual(vram.recommended_budget_gib(6.0), 3.0)
 
-    def test_floor_never_below_two(self):
-        self.assertEqual(vram.recommended_budget_gib(4.0), 2.0)  # min(1,3)=1 -> clamp 2
+    def test_floor_clamp_applies_when_headroom_and_fraction_are_both_below_it(self):
+        # 4 GB: min(1,3)=1, below the 2.0 floor -> clamp to 2.0 (2.0 <= 3.0 = 75% of 4, so
+        # the floor itself never exceeds the fraction cap here -> clamp is safe.
+        self.assertEqual(vram.recommended_budget_gib(4.0), 2.0)
+        # 3 GB: min(0,2.25)=0, floor 2.0 <= fraction cap 2.25 -> clamp to 2.0 (66.7% of 3).
         self.assertEqual(vram.recommended_budget_gib(3.0), 2.0)
-        self.assertEqual(vram.recommended_budget_gib(2.0), 2.0)
+
+    def test_floor_never_exceeds_the_fraction_cap_on_small_cards(self):
+        # Regression test for the HIGH finding (2026-07-17): floor_gib=2.0 applied
+        # unconditionally let a 1 GiB iGPU get a 2.0 GiB budget (200% of its VRAM)
+        # and a 2 GiB card get exactly 100%. The floor must never win against the
+        # fraction cap once the card is small enough for that to matter.
+        self.assertEqual(vram.recommended_budget_gib(1.0), 0.75)  # 75% of 1 GiB
+        self.assertEqual(vram.recommended_budget_gib(2.0), 1.5)   # 75% of 2 GiB
+
+    def test_breakdown_matches_recommended_budget_across_all_sizes(self):
+        # budget_breakdown() and recommended_budget_gib() must always agree --
+        # the status message is built from the former, the mod settings file
+        # from the latter, and they must never describe two different numbers.
+        for card_gib in (1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64):
+            with self.subTest(card_gib=card_gib):
+                breakdown = vram.budget_breakdown(float(card_gib))
+                self.assertEqual(breakdown.budget, vram.recommended_budget_gib(float(card_gib)))
+
+    def test_breakdown_reports_headroom_and_fraction_for_an_eight_gb_card(self):
+        breakdown = vram.budget_breakdown(7.996)
+        self.assertEqual(breakdown.rounded, 8)
+        self.assertEqual(breakdown.by_headroom, 5.0)   # 8 - 3
+        self.assertEqual(breakdown.by_fraction, 6.0)   # 8 * 0.75
+        self.assertEqual(breakdown.budget, 5.0)         # min(6.0, max(2.0, 5.0))
+
+    def test_budget_never_exceeds_the_physical_card_across_all_sizes(self):
+        # The invariant the old floor violated, executed across the whole domain
+        # rather than reasoned about in the abstract (see the "execute the
+        # formula" lesson from the 2026-07-17 session).
+        for card_gib in (1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64):
+            with self.subTest(card_gib=card_gib):
+                budget = vram.recommended_budget_gib(float(card_gib))
+                self.assertLessEqual(budget, card_gib)
 
 
 class NvidiaSmiParseTests(unittest.TestCase):
@@ -90,6 +125,7 @@ class WriteSettingsTests(unittest.TestCase):
             root = ET.parse(out).getroot()
             self.assertEqual(root.tag, "textureStreamingBudget")
             self.assertEqual(root.attrib["vramGiB"], "6.0")
+            self.assertEqual(root.attrib["formulaGen"], str(vram.FORMULA_GEN))
 
     def test_settings_filename_matches_mod(self):
         # The written filename MUST equal the mod name the Lua reads back.
